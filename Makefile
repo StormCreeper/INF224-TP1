@@ -27,5 +27,8 @@ $(TARGET): $(OBJECTS)
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-clean:
+clean::
 	$(RM) $(TARGET) $(OBJECTS)
+
+run: $(TARGET)
+	./$(TARGET)

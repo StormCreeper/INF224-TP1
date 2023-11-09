@@ -39,13 +39,13 @@ public: // Getters et setters
 
 	void setNumChapters(int numChapters) { this->numChapters = numChapters; }
 
-public: // Opérateurs de copie
+public: // OpÃ©rateurs de copie
 	FilmObject(const FilmObject &from) : FilmObject(from.getPathname(), from.getName(), from.getLength(), from.getChapterLengths(), from.getNumChapters()) { }
 	
 	FilmObject& operator=(const FilmObject& from);
 
 
-public: // Autres méthodes
+public: // Autres mÃ©thodes
 
 	void print(std::ostream& os) const override {
 		os << "Film object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", length=" << getLength() << ")\n";

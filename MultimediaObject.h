@@ -19,7 +19,6 @@ public: // Constructors and destructors
 	}
 
 	virtual ~MultimediaObject() {
-		std::cout << "\"Help je suis mort\" - " << getName() << "\n";
 	}
 
 public: // Getters and setters

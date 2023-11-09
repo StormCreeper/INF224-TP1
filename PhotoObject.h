@@ -8,7 +8,7 @@ private:
 	int width{};
 	int height{};
 
-public:
+private:
 	PhotoObject() : MultimediaObject() {}
 	PhotoObject(std::string name, std::string pathname) : MultimediaObject(name, pathname) { }
 	PhotoObject(std::string name, std::string pathname, int width, int height) : MultimediaObject(name, pathname) {
@@ -21,6 +21,8 @@ public: // Getters and setters
 	int getHeight() const { return height; }
 	void setWidth(int width) { this->width = width; };
 	void setHeight(int height) { this->height = height; }
+
+	friend class DataManager;
 
 public: // Other functions
 	void print(std::ostream &os) const override {
