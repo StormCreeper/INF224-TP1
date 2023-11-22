@@ -2,11 +2,13 @@ CC = g++
 CFLAGS = -g -O1
 
 TARGET := main.exe
-OBJECTS := main.o ObjectGroup.o FilmObject.o DataManager.o
+OBJECTS := main.o ObjectGroup.o FilmObject.o DataManager.o tcpserver/ccsocket.o tcpserver/tcpserver.o
 DEPS := FilmObject.h PhotoObject.h VideoObject.h ObjectGroup.h MultimediaObject.h DataManager.h
 
 # Compiler options
 LDFLAGS :=
+
+LDLIBS := -lpthread -lws2_32
 
 # Determine the operating system
 ifeq ($(OS),Windows_NT)
@@ -21,7 +23,7 @@ endif
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Rule to compile C source files into object files
 %.o: %.c $(DEPS)
