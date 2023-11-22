@@ -41,13 +41,13 @@ CXXFLAGS= -std=c++11 -Wall -g
 #
 # Options de l'editeur de liens
 #
-LDFLAGS= 
+LDFLAGS=
 
 #
 # Librairies a utiliser
 # Example: LDLIBS = -L/usr/local/qt/lib -lqt
 #
-LDLIBS= -lpthread 
+LDLIBS= -lpthread -lws2_32
 
 
 ##########################################
