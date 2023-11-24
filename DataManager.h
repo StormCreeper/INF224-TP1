@@ -21,27 +21,47 @@ private:
     GroupMap groups {};
 public:
     std::shared_ptr<PhotoObject> addNewPhoto(std::string name, std::string pathname, int width = 0, int height = 0) {
+        if(getObject(name)) {
+            std::cerr << "Object with name " << name << " already exists\n";
+            return nullptr;
+        }
         std::shared_ptr<PhotoObject> obj {new PhotoObject(name, pathname, width, height) };
         multimediaObjects[name] = obj;
         return obj;
     }
     std::shared_ptr<VideoObject> addNewVideo(std::string name, std::string pathname, float length) {
+        if(getObject(name)) {
+            std::cerr << "Object with name " << name << " already exists\n";
+            return nullptr;
+        }
         std::shared_ptr<VideoObject> obj = std::make_shared<VideoObject>(name, pathname, length);
         multimediaObjects[name] = obj;
         return obj;
     }
     std::shared_ptr<FilmObject> addNewFilm(std::string name, std::string pathname, float length, float *chapters, int nChapters) {
+        if(getObject(name)) {
+            std::cerr << "Object with name " << name << " already exists\n";
+            return nullptr;
+        }
         std::shared_ptr<FilmObject> obj = std::make_shared<FilmObject>(name, pathname, length, chapters, nChapters);
         multimediaObjects[name] = obj;
         return obj;
     }
     std::shared_ptr<ObjectGroup> addNewGroup(std::string name) {
+        if(getObject(name)) {
+            std::cerr << "Object with name " << name << " already exists\n";
+            return nullptr;
+        }
         std::shared_ptr<ObjectGroup> obj = std::make_shared<ObjectGroup>(name);
         groups[name] = obj;
         return obj;
     }
 
     std::shared_ptr<MultimediaObject> addObject(std::shared_ptr<MultimediaObject> obj) {
+        if(getObject(obj->getName())) {
+            std::cerr << "Object with name " << obj->getName() << " already exists\n";
+            return nullptr;
+        }
         multimediaObjects[obj->getName()] = obj;
         return obj;
     }
@@ -102,12 +122,9 @@ public:
     void deserialize(std::istream& is) {
         int nObjects;
         is >> nObjects;
-        std::cout << "nObjects = " << nObjects << "\n";
         for (int i = 0; i < nObjects; i++) {
             std::string objType;
             is >> objType;
-
-            std::cout << "objType = " << objType << "\n";
 
             std::shared_ptr<MultimediaObject> obj;
             if (objType == "Photo") {
@@ -124,8 +141,6 @@ public:
             obj->deserialize(is);
             addObject(obj);
         }
-
-        std::cout << "Number of objects : " << multimediaObjects.size() << "\n";
     }
 
 };

@@ -33,7 +33,6 @@ public: // Getters et setters
 		} else {
 			if (chapterLengths != nullptr) delete[] this->chapterLengths;
 			this->numChapters = 0;
-			std::cerr << "One array is null\n";
 		}
 	}
 

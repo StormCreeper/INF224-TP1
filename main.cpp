@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <sstream>
-#include "tcpserver/tcpserver.h"
+#include "tcpserver.h"
 
 #include <fstream>
 
@@ -88,7 +88,7 @@ int main(int argc, const char* argv[]) {
             response = "Unknown command : " + command;
         }
 
-        // return false would close the connecytion with the client
+        // return false would close the connection with the client
         return true;
     });
 
