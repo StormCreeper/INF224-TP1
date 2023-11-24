@@ -22,8 +22,8 @@ endif
 # Compilation rules
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+$(TARGET): $(OBJECTS) $(DEPS)
+	$(CC) -o $@ $(OBJECTS) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 # Rule to compile C source files into object files
 %.o: %.c $(DEPS)

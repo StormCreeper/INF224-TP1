@@ -59,6 +59,28 @@ public: // Autres méthodes
 		if (chapterLengths != nullptr)
 			delete[] this->chapterLengths;
 	}
+
+	virtual void serialize(std::ostream& os) const override {
+		os << "Film ";
+		VideoObject::serializeWithoutType(os);
+		os << numChapters << ";";
+		for (int i = 0; i < numChapters; i++) {
+			os << chapterLengths[i] << ";";
+		}
+	}
+
+	virtual void deserialize(std::istream& is) override {
+		VideoObject::deserialize(is);
+		std::string numChaptersStr;
+		std::getline(is, numChaptersStr, ';');
+		numChapters = std::stoi(numChaptersStr);
+		chapterLengths = new float[numChapters]();
+		for (int i = 0; i < numChapters; i++) {
+			std::string chapterLengthStr;
+			std::getline(is, chapterLengthStr, ';');
+			chapterLengths[i] = std::stof(chapterLengthStr);
+		}
+	}
 };
 
 #endif // !FILM_OBJECT_H

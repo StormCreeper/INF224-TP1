@@ -41,6 +41,11 @@ public:
         return obj;
     }
 
+    std::shared_ptr<MultimediaObject> addObject(std::shared_ptr<MultimediaObject> obj) {
+        multimediaObjects[obj->getName()] = obj;
+        return obj;
+    }
+
     std::shared_ptr<MultimediaObject> getObject(std::string name) {
         auto it = multimediaObjects.find(name);
         if (it != multimediaObjects.end()) {
@@ -51,12 +56,11 @@ public:
     }
 
     void printObject(std::string name, std::ostream& os) {
-        auto it = multimediaObjects.find(name);
-        if (it != multimediaObjects.end()) {
-            it->second->print(os);
-        } else {
-            os << "Object not found : " << name << "\n";
-        }
+        auto itObj = multimediaObjects.find(name);
+        auto itGroup = groups.find(name);
+        if (itObj != multimediaObjects.end()) itObj->second->print(os);
+        else if (itGroup != groups.end()) itGroup->second->print(os);
+        else std::cerr << "Object not found : " << name << "\n";
     }
 
     void playObject(std::string name) {
@@ -86,6 +90,42 @@ public:
         for (auto it = groups.begin(); it != groups.end(); it++) {
             it->second->print(os);
         }
+    }
+
+    void serialize(std::ostream& os) {
+        os << multimediaObjects.size() << " ";
+        for (auto it = multimediaObjects.begin(); it != multimediaObjects.end(); it++) {
+            it->second->serialize(os);
+        }
+    }
+
+    void deserialize(std::istream& is) {
+        int nObjects;
+        is >> nObjects;
+        std::cout << "nObjects = " << nObjects << "\n";
+        for (int i = 0; i < nObjects; i++) {
+            std::string objType;
+            is >> objType;
+
+            std::cout << "objType = " << objType << "\n";
+
+            std::shared_ptr<MultimediaObject> obj;
+            if (objType == "Photo") {
+                obj = std::make_shared<PhotoObject>("", "", 0, 0);
+            } else if (objType == "Video") {
+                obj = std::make_shared<VideoObject>("", "", 0);
+            } else if (objType == "Film") {
+                obj = std::make_shared<FilmObject>("", "", 0, nullptr, 0);
+            } else {
+                std::cerr << "Unknown object type : " << objType << "\n";
+                return;
+            }
+
+            obj->deserialize(is);
+            addObject(obj);
+        }
+
+        std::cout << "Number of objects : " << multimediaObjects.size() << "\n";
     }
 
 };

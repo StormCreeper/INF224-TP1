@@ -8,7 +8,7 @@ private:
 	int width{};
 	int height{};
 
-private:
+public:
 	PhotoObject() : MultimediaObject() {}
 	PhotoObject(std::string name, std::string pathname) : MultimediaObject(name, pathname) { }
 	PhotoObject(std::string name, std::string pathname, int width, int height) : MultimediaObject(name, pathname) {
@@ -32,6 +32,21 @@ public: // Other functions
 	const void play() override {
 		std::string command = "imagej \"" + getPathname() + "\" &";
 		system(command.c_str());
+	}
+
+	void serialize(std::ostream& os) const override {
+		os << "Photo ";
+		MultimediaObject::serialize(os);
+		os << width << ";" << height << ";";
+	}
+
+	void deserialize(std::istream& is) override {
+		MultimediaObject::deserialize(is);
+		std::string widthStr, heightStr;
+		std::getline(is, widthStr, ';');
+		std::getline(is, heightStr, ';');
+		width = std::stoi(widthStr);
+		height = std::stoi(heightStr);
 	}
 };
 

@@ -5,6 +5,8 @@
 #include <sstream>
 #include "tcpserver/tcpserver.h"
 
+#include <fstream>
+
 const int PORT = 3331;
 
 #include "DataManager.h"
@@ -31,6 +33,24 @@ int main(int argc, const char* argv[]) {
     objGroup->push_back(dataManager.addNewFilm("BB Cravate <333333 Film", "C:/Users/telop/Downloads/IMG_0177.mov", 10, chapterLengths, 4));
 
     dataManager.print(std::cout);
+ 
+    // Test serialization in a file
+    std::ofstream file{"test.txt"};
+    dataManager.serialize(file);
+    file.close();
+
+    std::cout << "-------------------\n";
+    std::cout << "Deserialization\n";
+
+
+    // Test deserialization from a file
+    std::ifstream file2{"test.txt"};
+    DataManager dataManager2{};
+
+    dataManager2.deserialize(file2);
+    file2.close();
+
+    dataManager2.print(std::cout);
 
     // cree le TCPServer
     auto* server = new TCPServer([&](std::string const& request, std::string& response) {
@@ -39,7 +59,7 @@ int main(int argc, const char* argv[]) {
 
         std::stringstream ss{request};
 
-        std::string command {};
+        std::string command {};  
         ss >> command;
 
         // The rest is the name of the object
@@ -72,12 +92,10 @@ int main(int argc, const char* argv[]) {
         return true;
     });
 
-    // lance la boucle infinie du serveur
     std::cout << "Starting Server on port " << PORT << std::endl;
 
     int status = server->run(PORT);
 
-    // en cas d'erreur
     if (status < 0) {
         std::cerr << "Could not start Server on port " << PORT << std::endl;
         return 1;

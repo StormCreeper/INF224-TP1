@@ -33,6 +33,15 @@ public: // Other functions
 		os << "Multimedia object (Name = \"" << name << "\", Pathname = \"" << pathname << "\")\n";
 	};
 	virtual const void play() = 0;
+
+	virtual void serialize(std::ostream& os) const {
+		os << name << ";" << pathname << ";";
+	};
+
+	virtual void deserialize(std::istream& is) {
+		std::getline(is, name, ';');
+		std::getline(is, pathname, ';');
+	};
 };
 
 typedef std::shared_ptr<MultimediaObject> MediaPtr;
