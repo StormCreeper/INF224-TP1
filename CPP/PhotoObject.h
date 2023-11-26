@@ -26,7 +26,7 @@ public: // Getters and setters
 
 public: // Other functions
 	void print(std::ostream &os) const override {
-		os << "Photo object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", width=" << getWidth() << ", height=" << getHeight() <<")\n";
+		os << "Photo object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", width=" << getWidth() << ", height=" << getHeight() <<")";
 	};
 
 	const void play() override {

@@ -7,54 +7,11 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
-	private static final long serialVersionUID = 1L;
 	static final String DEFAULT_HOST = "localhost";
 	static final int DEFAULT_PORT = 3331;
 	private Socket sock;
 	private BufferedReader input;
 	private BufferedWriter output;
-
-	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-	///
-	/// Lit une requete depuis le Terminal, envoie cette requete au serveur,
-	/// recupere sa reponse et l'affiche sur le Terminal.
-	/// Noter que le programme bloque si le serveur ne repond pas.
-	///
-	public static void main(String argv[]) {
-		String host = DEFAULT_HOST;
-		int port = DEFAULT_PORT;
-		if (argv.length >= 1)
-			host = argv[0];
-		if (argv.length >= 2)
-			port = Integer.parseInt(argv[1]);
-
-		Client client = null;
-
-		try {
-			client = new Client(host, port);
-		} catch (Exception e) {
-			System.err.println("Client: Couldn't connect to " + host + ":" + port);
-			System.exit(1);
-		}
-
-		System.out.println("Client connected to " + host + ":" + port);
-
-		// pour lire depuis la console
-		BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
-
-		while (true) {
-			System.out.print("Request: ");
-			try {
-				String request = cin.readLine();
-				String response = client.send(request);
-				System.out.println("Response: " + response);
-			} catch (java.io.IOException e) {
-				System.err.println("Client: IO error");
-				return;
-			}
-		}
-	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

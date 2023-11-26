@@ -102,13 +102,16 @@ public:
     }
 
     void print(std::ostream& os) {
-        os << "Multimedia objects : \n";
+        os << "Multimedia objects : ";
         for (auto it = multimediaObjects.begin(); it != multimediaObjects.end(); it++) {
             it->second->print(os);
+            os << ", ";
         }
-        os << "Groups : \n";
+        os << ";";
+        os << "Groups : ";
         for (auto it = groups.begin(); it != groups.end(); it++) {
             it->second->print(os);
+            os << ", ";
         }
     }
 
@@ -140,6 +143,17 @@ public:
 
             obj->deserialize(is);
             addObject(obj);
+        }
+    }
+
+    void listNames(std::ostream& os) {
+        os << "Multimedia objects : ";
+        for (auto it = multimediaObjects.begin(); it != multimediaObjects.end(); it++) {
+            os << it->first << ", ";
+        }
+        os << "Groups : ";
+        for (auto it = groups.begin(); it != groups.end(); it++) {
+            os << it->first << ", ";
         }
     }
 

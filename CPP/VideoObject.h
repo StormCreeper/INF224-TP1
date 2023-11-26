@@ -17,7 +17,7 @@ public:
 
 public:
 	void print(std::ostream& os) const override {
-		os << "Video object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", length=" << getLength() << ")\n";
+		os << "Video object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", length=" << getLength() << ")";
 	};
 	const void play() override {
 		std::string command = "mpv \"" + getPathname() + "\" &";

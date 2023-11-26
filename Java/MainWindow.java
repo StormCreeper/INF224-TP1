@@ -5,9 +5,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.event.WindowEvent;
 
@@ -16,12 +20,18 @@ public class MainWindow extends JFrame {
     private static final long serialVersionUID = 1L;
     
     private JTextArea textArea;
-
-    // Network variables 
+    private JScrollPane scrollPane;
+    
+    private static Client client = null;
 
     public static void main(String[] args) {
+        /*try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }*/
         MainWindow window = new MainWindow();
-        Client client = null;
 
         try {
 			client = new Client(Client.DEFAULT_HOST, Client.DEFAULT_PORT);
@@ -46,7 +56,25 @@ public class MainWindow extends JFrame {
     }
 
     private void initUI() {
-        add(textArea = new JTextArea(), "Center");
+
+        textArea = new JTextArea();
+
+        textArea.setWrapStyleWord(true);
+        textArea.setLineWrap(true);
+        textArea.setEditable(false);
+        //textArea.setFocusable(false);
+        //textArea.setOpaque(false);
+
+        scrollPane =  new JScrollPane(textArea,
+                        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+                        );
+        add(scrollPane, "Center");
+
+        
+
+        JTextField playField = new JTextField();
+        JTextField displayField = new JTextField();
 
         Action actionExit = new AbstractAction("Exit") {
             @Override
@@ -57,19 +85,37 @@ public class MainWindow extends JFrame {
         Action actionDisplay = new AbstractAction("Display info") {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                writeLine("Displaying info");
+                String request = "display " + displayField.getText();
+                displayField.setText("");
+                String response = sendRequest(request);
+                writeLine("Request: " + request);
+                writeLine("Response: " + response);
             }
         };
         Action actionPlay = new AbstractAction("Play") {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                writeLine("Playing");
+                String request = "play " + playField.getText();
+                playField.setText("");
+                String response = sendRequest(request);
+                writeLine("Request: " + request);
+                writeLine("Response: " + response);
             }
         };
         Action actionList = new AbstractAction("List") {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                writeLine("Listing");
+                String request = "list";
+                String response = sendRequest(request);
+                writeLine("Request: " + request);
+                writeLine("Response: " + response);
+            }
+        };
+
+        Action actionClear = new AbstractAction("Clear") {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                textArea.setText("");
             }
         };
 
@@ -82,14 +128,15 @@ public class MainWindow extends JFrame {
         panelDisplay.setLayout(new java.awt.GridLayout(2, 1));
         panelPlay.setLayout(new java.awt.GridLayout(2, 1));
 
-        panelDisplay.add(new JTextField());
-        panelPlay.add(new JTextField());
+        panelDisplay.add(displayField);
+        panelPlay.add(playField);
         
         panelDisplay.add(new JButton(actionDisplay));
         panelPlay.add(new JButton(actionPlay));
+
         panel.add(panelDisplay);
         panel.add(panelPlay);
-        panel.add(new JButton(actionExit));
+        panel.add(new JButton(actionList));
 
         add(panel, "South");
 
@@ -100,14 +147,14 @@ public class MainWindow extends JFrame {
         setJMenuBar(menuBar = new JMenuBar());
         menuBar.add(menuFile = new JMenu("File"));
         
-        menuFile.add(actionList);
+        menuFile.add(actionClear);
         menuFile.add(actionExit);
 
         // Add toolbar
         JToolBar toolBar = new JToolBar();
-        toolBar.add(panelPlay);
-        toolBar.add(panelDisplay);
-        toolBar.add(actionList);
+        //toolBar.add(panelDisplay);
+        //toolBar.add(panelPlay);
+        toolBar.add(actionClear);
         toolBar.add(actionExit);
 
         add(toolBar, "North");
@@ -115,5 +162,15 @@ public class MainWindow extends JFrame {
 
     public void writeLine(String line) {
         textArea.append(line + "\n");
+        // Auto scroll to bottom
+        textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
+
+    private static String sendRequest(String request) {
+        if (client == null) {
+            return "Client not connected";
+        }
+        String response = client.send(request);
+        return response;
     }
 }

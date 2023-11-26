@@ -19,18 +19,14 @@ const int PORT = 3331;
 int main(int argc, const char* argv[]) {
     float chapterLengths[4]{2, 3, 1, 6};
 
-    /*objects[0] =
-    objects[1] = new PhotoObject("Space Invader >:(", "C:/Users/telop/Desktop/invader.png");
-    objects[2] = new FilmObject("BB Cravate <333333", "C:/Users/telop/Downloads/IMG_0177.mov", 10, chapterLengths, 4);*/
-
     DataManager dataManager{};
 
     std::shared_ptr<ObjectGroup> objGroup = dataManager.addNewGroup("Test");
 
-    objGroup->push_back(dataManager.addNewPhoto("Dragonnnnn", "C:/Users/telop/Desktop/Dragon.png"));
-    objGroup->push_back(dataManager.addNewPhoto("Space Invader >:(", "C:/Users/telop/Desktop/invader.png"));
-    objGroup->push_back(dataManager.addNewVideo("BB Cravate <333333 Video", "C:/Users/telop/Downloads/IMG_0177.mov", 10));
-    objGroup->push_back(dataManager.addNewFilm("BB Cravate <333333 Film", "C:/Users/telop/Downloads/IMG_0177.mov", 10, chapterLengths, 4));
+    objGroup->push_back(dataManager.addNewPhoto("Lichtenstein", "../Media/Lichtenstein.png"));
+    objGroup->push_back(dataManager.addNewPhoto("Lenna", "../Media/Lenna.png"));
+    objGroup->push_back(dataManager.addNewVideo("Montagne", "../Media/montagne.mp4", 10));
+    objGroup->push_back(dataManager.addNewFilm("Film", "../Media/montagne.mp4", 10, chapterLengths, 4));
 
     dataManager.print(std::cout);
  
@@ -39,8 +35,8 @@ int main(int argc, const char* argv[]) {
     dataManager.serialize(file);
     file.close();
 
-    std::cout << "-------------------\n";
-    std::cout << "Deserialization\n";
+    std::cout << "\n\n-------------------\n";
+    std::cout << "Deserialization\n\n";
 
 
     // Test deserialization from a file
@@ -51,6 +47,8 @@ int main(int argc, const char* argv[]) {
     file2.close();
 
     dataManager2.print(std::cout);
+
+    std::cout << "\n\n-------------------\n\n";
 
     // cree le TCPServer
     auto* server = new TCPServer([&](std::string const& request, std::string& response) {
@@ -84,6 +82,10 @@ int main(int argc, const char* argv[]) {
             } else {
                 response = "Object not found : " + name;
             }
+        } else if(command == "list") {
+            std::stringstream stream{};
+            dataManager.listNames(stream);
+            response = stream.str();
         } else {
             response = "Unknown command : " + command;
         }

@@ -1,1 +1,1 @@
-4 Film BB Cravate <333333 Film;C:/Users/telop/Downloads/IMG_0177.mov;10;4;2;3;1;6;Video BB Cravate <333333 Video;C:/Users/telop/Downloads/IMG_0177.mov;10;Photo Dragonnnnn;C:/Users/telop/Desktop/Dragon.png;0;0;Photo Space Invader >:(;C:/Users/telop/Desktop/invader.png;0;0;
+4 Film Film;../Media/montagne.mp4;10;4;2;3;1;6;Photo Lenna;../Media/Lenna.png;0;0;Photo Lichtenstein;../Media/Lichtenstein.png;0;0;Video Montagne;../Media/montagne.mp4;10;

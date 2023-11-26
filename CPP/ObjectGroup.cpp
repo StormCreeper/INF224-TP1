@@ -1,8 +1,9 @@
 #include "ObjectGroup.h"
 
 void ObjectGroup::print(std::ostream& os) const {
-	std::cout << "Object group : \n";
+	std::cout << "Object group : [";
 	for (MediaPtr media : *this) {
-		std::cout << "\t"; media->print(os);
+		std::cout << " | "; media->print(os);
 	}
+	std::cout << " ]";
 }

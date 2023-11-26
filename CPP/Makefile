@@ -8,12 +8,13 @@ DEPS := FilmObject.h PhotoObject.h VideoObject.h ObjectGroup.h MultimediaObject.
 # Compiler options
 LDFLAGS :=
 
-LDLIBS := -lpthread -lws2_32
+LDLIBS := -lpthread
 
 # Determine the operating system
 ifeq ($(OS),Windows_NT)
     RM = del /Q
     EXECUTABLE_EXTENSION = .exe
+	LDLIBS += -lws2_32
 else
     RM = rm -f
     EXECUTABLE_EXTENSION =

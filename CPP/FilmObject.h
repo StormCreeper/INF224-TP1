@@ -47,11 +47,12 @@ public: // Opérateurs de copie
 public: // Autres méthodes
 
 	void print(std::ostream& os) const override {
-		os << "Film object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", length=" << getLength() << ")\n";
-		os << "Chapter lengths : \n";
+		os << "Film object (name = \"" << getName() << "\", pathname = \"" << getPathname() << "\", length=" << getLength() << ",";
+		os << "Chapter lengths : [";
 		for (int i = 0; i < numChapters; i++) {
-			os << "    " << chapterLengths[i] << "seconds \n";
+			os << " " << chapterLengths[i] << "seconds ,";
 		}
+		os << "])";
 	}
 
 	~FilmObject() {

@@ -30,7 +30,7 @@ public: // Getters and setters
 
 public: // Other functions
 	virtual void print(std::ostream& os) const {
-		os << "Multimedia object (Name = \"" << name << "\", Pathname = \"" << pathname << "\")\n";
+		os << "Multimedia object (Name = \"" << name << "\", Pathname = \"" << pathname << "\");";
 	};
 	virtual const void play() = 0;
 
