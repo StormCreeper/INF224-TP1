@@ -20,6 +20,9 @@ private:
     ObjectMap multimediaObjects {};
     GroupMap groups {};
 public:
+    /*
+    These methods (addNew*) return a shared_ptr to the created object that will be stored in the map, and nullptr if an object with the same name already exists.
+    */
     std::shared_ptr<PhotoObject> addNewPhoto(std::string name, std::string pathname, int width = 0, int height = 0) {
         if(getObject(name)) {
             std::cerr << "Object with name " << name << " already exists\n";
@@ -49,7 +52,7 @@ public:
     }
     std::shared_ptr<ObjectGroup> addNewGroup(std::string name) {
         if(getObject(name)) {
-            std::cerr << "Object with name " << name << " already exists\n";
+            std::cerr << "Group with name " << name << " already exists\n";
             return nullptr;
         }
         std::shared_ptr<ObjectGroup> obj = std::make_shared<ObjectGroup>(name);
@@ -57,6 +60,9 @@ public:
         return obj;
     }
 
+    /*
+        This method returns a shared_ptr to the existing object that was added, and nullptr if an object with the same name already exists.
+    */
     std::shared_ptr<MultimediaObject> addObject(std::shared_ptr<MultimediaObject> obj) {
         if(getObject(obj->getName())) {
             std::cerr << "Object with name " << obj->getName() << " already exists\n";
@@ -66,6 +72,9 @@ public:
         return obj;
     }
 
+    /*
+        This method returns seeks for an object with the given name in the map, and returns a shared_ptr to it if it exists, and nullptr otherwise.
+    */
     std::shared_ptr<MultimediaObject> getObject(std::string name) {
         auto it = multimediaObjects.find(name);
         if (it != multimediaObjects.end()) {
@@ -75,6 +84,9 @@ public:
         }
     }
 
+    /*
+        this methods seeks for an object or a group with the given name in the map, and prints it if it exists, and prints an error message otherwise.
+    */
     void printObject(std::string name, std::ostream& os) {
         auto itObj = multimediaObjects.find(name);
         auto itGroup = groups.find(name);
@@ -83,6 +95,9 @@ public:
         else std::cerr << "Object not found : " << name << "\n";
     }
 
+    /*
+        this methods seeks for an object or a group with the given name in the map, and prints it if it exists, and plays an error message otherwise.
+    */
     void playObject(std::string name) {
         auto it = multimediaObjects.find(name);
         if (it != multimediaObjects.end()) {
@@ -92,6 +107,9 @@ public:
         }
     }
 
+    /*
+        this methods seeks for an object or a group with the given name in the map, and deletes it if it exists, and prints an error message otherwise.
+    */
     void deleteObject(std::string name) {
         auto it = multimediaObjects.find(name);
         if (it != multimediaObjects.end()) {
@@ -101,6 +119,9 @@ public:
         }
     }
 
+    /*
+        This method prints all the objects and groups in the map.
+    */
     void print(std::ostream& os) {
         os << "Multimedia objects : ";
         for (auto it = multimediaObjects.begin(); it != multimediaObjects.end(); it++) {
@@ -115,6 +136,9 @@ public:
         }
     }
 
+    /*
+        This method serializes all the objects in the map. Groups are not supported yet.
+    */
     void serialize(std::ostream& os) {
         os << multimediaObjects.size() << " ";
         for (auto it = multimediaObjects.begin(); it != multimediaObjects.end(); it++) {
@@ -122,6 +146,9 @@ public:
         }
     }
 
+    /*
+        This method fills the DataManager with serialized objects from a stream. Groups are not supported yet.
+    */
     void deserialize(std::istream& is) {
         int nObjects;
         is >> nObjects;
@@ -145,7 +172,9 @@ public:
             addObject(obj);
         }
     }
-
+    /*
+        This method gets the names of all the objects and groups in the map.
+    */
     void listNames(std::ostream& os) {
         os << "Multimedia objects : ";
         for (auto it = multimediaObjects.begin(); it != multimediaObjects.end(); it++) {
@@ -156,7 +185,6 @@ public:
             os << it->first << ", ";
         }
     }
-
 };
 
 #endif // DATA_MANAGER_H

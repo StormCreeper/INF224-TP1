@@ -65,8 +65,7 @@ int main(int argc, const char* argv[]) {
         std::getline(ss, name);
         name.erase(0, 1);
 
-        // Commands are "display" and "play"
-        
+        // For each command, we check if the object exists and then execute the command, and return the result in the response string
         if(command == "display") {
             if(dataManager.getObject(name) != nullptr) {
                 std::stringstream stream{};

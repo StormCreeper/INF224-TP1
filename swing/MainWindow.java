@@ -10,8 +10,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.event.WindowEvent;
 
@@ -25,12 +23,6 @@ public class MainWindow extends JFrame {
     private static Client client = null;
 
     public static void main(String[] args) {
-        /*try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }*/
         MainWindow window = new MainWindow();
 
         try {
@@ -62,15 +54,12 @@ public class MainWindow extends JFrame {
         textArea.setWrapStyleWord(true);
         textArea.setLineWrap(true);
         textArea.setEditable(false);
-        //textArea.setFocusable(false);
-        //textArea.setOpaque(false);
 
         scrollPane =  new JScrollPane(textArea,
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
                         );
         add(scrollPane, "Center");
-
         
 
         JTextField playField = new JTextField();
